@@ -26,12 +26,6 @@
 
 []
 
-[Functions]
-  [./ic_func_eta]
-    type = ParsedFunction
-    value = '0.5*(1.0-tanh((x)/sqrt(2.0)))'
-  [../]
-[]
 
 [ICs]
   [./eta_IC]
