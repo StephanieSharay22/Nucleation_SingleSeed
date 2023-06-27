@@ -111,7 +111,7 @@
     args = 'eta'
     f_name = F
     material_property_names = 'g(eta) p(eta)'
-    function = 'g(eta) - p(eta)'
+    function = 'g - p'
     outputs = exodus
   [../]
 []
