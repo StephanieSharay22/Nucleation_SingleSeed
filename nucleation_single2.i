@@ -32,7 +32,7 @@
       upper_bound = 0.9
     []
     [uniform]
-      type = uniform marker
+      type = UniformMarker
       mark = REFINE
     []
   []
