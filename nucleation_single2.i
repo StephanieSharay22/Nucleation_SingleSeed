@@ -64,19 +64,19 @@
 
 [Kernels]
   [./detadt] # time derivative deta/dt
-    type = ADTimeDerivative
+    type = TimeDerivative
     variable = eta
   [../]
 
   [./ACBulk]
-    type = ADAllenCahn
+    type = AllenCahn
     variable = eta
     f_name = F
     mob_name = L
   [../]
 
   [./ACInterface]
-    type = ADACInterface
+    type = ACInterface
     variable = eta
     kappa_name = kappa
     variable_L = false
@@ -86,32 +86,32 @@
 
 [Materials]
   [./consts]
-    type = ADGenericConstantMaterial
+    type = GenericConstantMaterial
     prop_names  = 'L deltaF   W kappa'
     prop_values = '1 0.04714  1 1'
   [../]
 
 # ParsedMaterial method
   [./free_energy]
-    type = ADDerivativeParsedMaterial
+    type = DerivativeParsedMaterial
     args  = 'eta'
     f_name = p
     material_property_names = 'deltaF'
     function ='deltaF*eta^3*(10-15*eta+6*eta^2)'
   [../]
   [./barrierF]
-    type = ADDerivativeParsedMaterial
+    type = DerivativeParsedMaterial
     args = 'eta'
     f_name = g
     material_property_names = 'W'
     function = 'W * eta^2 * (1 - eta)^2'
   [../]
   [./bulkF]
-    type = ADDerivativeParsedMaterial
+    type = DerivativeParsedMaterial
     args = 'eta'
     f_name = F
-    material_property_names = 'g p'
-    function = 'g - p'
+    material_property_names = 'g(eta) p(eta)'
+    function = 'g(eta) - p(eta)'
     outputs = exodus
   [../]
 []
@@ -156,7 +156,7 @@
   scheme = 'bdf2'
   solve_type = 'NEWTON'
   end_time = 200
-  dt = 1
+  dt = 0.5
 []
 
 [Outputs]
