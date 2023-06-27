@@ -9,14 +9,35 @@
 [Mesh]
   type = GeneratedMesh
   dim = 2
-  nx = 200 # number of elements in x direction
-  ny = 200 # number of elements in y direction
+  nx = 50 # number of elements in x direction
+  ny = 50 # number of elements in y direction
   xmin = -50
   xmax = 50 # upper x coordinate of generated mesh
   ymin = -50
   ymax = 50 # upper y coordinate of generated mesh
   elem_type = QUAD
 []
+
+[Adaptivity]
+  steps = 1
+  marker = eta_mark
+  max_h_level = 2
+  initial_steps = 2
+  initial_marker = uniform
+  [Markers]
+    [eta_mark]
+      type = ValueRangeMarker
+      variable = eta
+      lower_bound = 0.1
+      upper_bound = 0.9
+    []
+    [uniform]
+      type = uniform marker
+      mark = REFINE
+    []
+  []
+[]
+
 
 [Variables]
   [./eta]
@@ -30,11 +51,12 @@
 [ICs]
   [./eta_IC]
     type = SmoothCircleIC
+    profile = TANH
     variable = eta
     invalue = 1
     outvalue = 0
     radius = 5
-    int_width = 1.414
+    int_width = 3.1113
     x1 = 0
     y1 = 0
   [../]
@@ -66,7 +88,7 @@
   [./consts]
     type = ADGenericConstantMaterial
     prop_names  = 'L deltaF   W kappa'
-    prop_values = '1 0.4714  1 1'
+    prop_values = '1 0.04714  1 1'
   [../]
 
 # ParsedMaterial method
@@ -117,6 +139,15 @@
     type = ElementIntegralVariablePostprocessor
     variable = F
   [../]
+  [radius]
+    type = FindValueOnLine
+    v = eta
+    target = 0.5
+    tol = 0.01
+    start_point = '0 0 0'
+    end_point = '0 50 0'
+    error_if_not_found = false
+  []
 []
 
 
